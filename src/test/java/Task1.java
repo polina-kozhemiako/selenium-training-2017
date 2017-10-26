@@ -10,7 +10,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 /**
  * Created by polina.kozhemiako on 10/23/2017.
  */
-public class Tesk1 {
+public class Task1 {
 
     @Test
     public void GoogleTest(){
