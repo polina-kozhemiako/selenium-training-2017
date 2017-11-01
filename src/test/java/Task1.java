@@ -1,27 +1,36 @@
+import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 /**
- * Created by polina.kozhemiako on 10/23/2017.
+ * Created by polina.kozhemiako on 10/31/2017.
  */
 public class Task1 {
+    private static WebDriver driver;
+
+    @Before
+    public void start(){
+        InternetExplorerDriverManager.getInstance().arch32().setup();
+        driver = new InternetExplorerDriver();
+    }
 
     @Test
     public void GoogleTest(){
-        //FirefoxDriverManager.getInstance().setup();
-        InternetExplorerDriverManager.getInstance().arch32().setup();
-        //WebDriver driver = new FirefoxDriver();
-        WebDriver driver = new InternetExplorerDriver();
-
         driver.get("https://google.com");
-        driver.findElement(By.xpath("//*[@id='lst-ib']")).sendKeys("qwerty");
+        driver.findElement(By.xpath("//*[@id='lst-ib']")).sendKeys("qwerty" + Keys.ENTER);
+    }
 
+    @After
+    public void stop() {
         driver.close();
     }
 }
