@@ -7,24 +7,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
-
 /**
  * Created by polina.kozhemiako on 10/26/2017.
  */
 public class Task4 {
-    public static WebDriver driver;
-
-    public Task4(){
-        driver = new FirefoxDriver();
-        //driver = new InternetExplorerDriver();
-        //driver = new ChromeDriver();
-    }
+    private static WebDriver driver;
 
     @BeforeClass
     public static void startTesting(){
         FirefoxDriverManager.getInstance().setup();
         //InternetExplorerDriverManager.getInstance().arch32().setup();
         //ChromeDriverManager.getInstance().setup();
+        driver = new FirefoxDriver();
     }
 
     @Before
@@ -35,89 +29,78 @@ public class Task4 {
     }
 
     @Test
-    public void verifyProductName(){
-        WebElement elItemName = driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]/div[2]"));
-        String itemName = elItemName.getText();
-        WebElement yellowDuckItem= driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]"));
-        yellowDuckItem.click();
-        WebElement elProductName = driver.findElement(By.xpath("//*[@id=\"box-product\"]/div[1]/h1"));
-        String productName = elProductName.getText();
+    public void LC_01_verifyProductName(){
+        String itemName = driver.findElement(By.xpath("//*[@id='box-campaigns']//div[2]")).getText();
+        driver.findElement(By.xpath("//*[@id='box-campaigns']//a[1]")).click();
+        String productName = driver.findElement(By.cssSelector("h1.title")).getText();
 
         Assert.assertEquals("Product name on main page is not the same as on product page.", itemName, productName);
     }
 
     @Test
-    public void verifyRegularPriceValue(){
-        WebElement elItemRegularPrice =  driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]/div[4]/s"));
-        String itemRegPrice = elItemRegularPrice.getText();
-        WebElement yellowDuckItem= driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]"));
-        yellowDuckItem.click();
-        WebElement elProductRegularPrice = driver.findElement(By.xpath("//*[@id=\"box-product\"]/div[2]/div[2]/div[2]/s"));
-        String productRegPrice = elProductRegularPrice.getText();
+    public void LC_02_verifyRegularPriceValue(){
+        String itemRegPrice = driver.findElement(By.xpath("//*[@id='box-campaigns']//s")).getText();
+        driver.findElement(By.xpath("//*[@id='box-campaigns']//a[1]")).click();
+        String productRegPrice = driver.findElement(By.cssSelector("s.regular-price")).getText();
 
         Assert.assertEquals("Regular price value on main page is not the same as on product page.", itemRegPrice, productRegPrice);
     }
 
     @Test
-    public void verifySpecialPriceValue(){
-        WebElement elItemSpecialPrice =  driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]/div[4]/strong"));
-        String itemSpecPrice = elItemSpecialPrice.getText();
-        WebElement yellowDuckItem= driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]"));
-        yellowDuckItem.click();
-        WebElement elProductSpecialPrice = driver.findElement(By.xpath("//*[@id=\"box-product\"]/div[2]/div[2]/div[2]/strong"));
-        String productSpecPrice = elProductSpecialPrice.getText();
+    public void LC_03_verifySpecialPriceValue(){
+        String itemSpecPrice = driver.findElement(By.xpath("//*[@id='box-campaigns']//strong")).getText();
+        driver.findElement(By.xpath("//*[@id=\'box-campaigns\']//a[1]")).click();
+        String productSpecPrice = driver.findElement(By.cssSelector("strong.campaign-price")).getText();
 
         Assert.assertEquals("Special price value on main page is not the same as on product page.", itemSpecPrice, productSpecPrice);
     }
 
-    // will fail in IE: rgba(119, 119, 119, 1)
     @Test
-    public void verifyRegularPriceFontOnMainPage(){
-        WebElement elItemRegularPrice = driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]/div[4]/s"));
+    public void LC_04_verifyRegularPriceFontOnMainPage(){
+        WebElement elItemRegularPrice = driver.findElement(By.xpath("//*[@id='box-campaigns']//s"));
         String itemRegPriceFontColor = elItemRegularPrice.getCssValue("color");
         String itemRegPriceFontStyle = elItemRegularPrice.getCssValue("text-decoration");
+        String expected =(driver instanceof InternetExplorerDriver)?"rgba(119, 119, 119, 1)":"rgb(119, 119, 119)";
 
-        Assert.assertEquals("Regular price text color on main page is not gray.","rgb(119, 119, 119)", itemRegPriceFontColor );
+        Assert.assertEquals("Regular price text color on main page is not gray.", expected, itemRegPriceFontColor );
         Assert.assertEquals("Regular price text style on main page is not strike.", "line-through", itemRegPriceFontStyle);
     }
 
-    // will fail in IE: rgba(102, 102, 102, 1)
     @Test
-    public void verifyRegularPriceFontOnProductPage(){
-        WebElement yellowDuckItem = driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]"));
-        yellowDuckItem.click();
-        WebElement elProductRegularPrice = driver.findElement(By.xpath("//*[@id=\"box-product\"]/div[2]/div[2]/div[2]/s"));
+    public void LC_05_verifyRegularPriceFontOnProductPage(){
+        driver.findElement(By.xpath("//*[@id='box-campaigns']//a[1]")).click();
+        WebElement elProductRegularPrice = driver.findElement(By.cssSelector("s.regular-price"));
         String productRegPriceFontColor = elProductRegularPrice.getCssValue("color");
         String productRegPriceFontStyle = elProductRegularPrice.getCssValue("text-decoration");
+        String expected =(driver instanceof InternetExplorerDriver)?"rgba(102, 102, 102, 1)":"rgb(102, 102, 102)";
 
-        Assert.assertEquals("Regular price text color on product page is not gray.","rgb(102, 102, 102)", productRegPriceFontColor );
+        Assert.assertEquals("Regular price text color on product page is not gray.", expected, productRegPriceFontColor );
         Assert.assertEquals("Regular price text style on product page is not strike.", "line-through", productRegPriceFontStyle);
     }
 
-    // will fail in FF: font-weight=900
-    // will fail in IE: rgba(204, 0, 0, 1)
     @Test
-    public void verifySpecialPriceFontOnMainPage(){
-        WebElement elItemSpecialPrice =  driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]/div[4]/strong"));
+    public void LC_06_verifySpecialPriceFontOnMainPage(){
+        WebElement elItemSpecialPrice =  driver.findElement(By.xpath("//*[@id='box-campaigns']//strong"));
         String itemSpecPriceFontColor = elItemSpecialPrice.getCssValue("color");
         String itemSpecPriceFontStyle = elItemSpecialPrice.getCssValue("font-weight");
+        String expectedColor =(driver instanceof InternetExplorerDriver)?"rgba(204, 0, 0, 1)":"rgb(204, 0, 0)";
+        String expectedStyle =(driver instanceof ChromeDriver)?"bold":"900";
 
-        Assert.assertEquals("Special price text color on main page is not red.","rgb(204, 0, 0)", itemSpecPriceFontColor );
-        Assert.assertEquals("Special price text style on main page is not bold.", "bold", itemSpecPriceFontStyle);
+        Assert.assertEquals("Special price text color on main page is not red.", expectedColor, itemSpecPriceFontColor );
+        Assert.assertEquals("Special price text style on main page is not bold.", expectedStyle, itemSpecPriceFontStyle);
     }
 
-    // will fail in FF: font-weight=700
-    // will fail in IE: rgba(204, 0, 0, 1)
     @Test
-    public void verifySpecialPriceFontOnProductPage(){
-        WebElement yellowDuckItem = driver.findElement(By.xpath("//*[@id=\"box-campaigns\"]/div/ul/li/a[1]"));
-        yellowDuckItem.click();
-        WebElement elProductSpecialPrice = driver.findElement(By.xpath("//*[@id=\"box-product\"]/div[2]/div[2]/div[2]/strong"));
+    public void LC_07_verifySpecialPriceFontOnProductPage(){
+        driver.findElement(By.xpath("//*[@id='box-campaigns']//a[1]")).click();
+        WebElement elProductSpecialPrice = driver.findElement(By.cssSelector("strong.campaign-price"));
         String productSpecPriceFontColor = elProductSpecialPrice.getCssValue("color");
         String productSpecPriceFontStyle = elProductSpecialPrice.getCssValue("font-weight");
+        String expectedColor =(driver instanceof InternetExplorerDriver)?"rgba(204, 0, 0, 1)":"rgb(204, 0, 0)";
+        String expectedStyle =(driver instanceof ChromeDriver)?"bold":"700";
 
-        Assert.assertEquals("Special price text color on product page is not red.","rgb(204, 0, 0)", productSpecPriceFontColor );
-        Assert.assertEquals("Special price text style on product page is not bold.", "bold", productSpecPriceFontStyle);
+        Assert.assertEquals("Special price text color on product page is not red.",expectedColor, productSpecPriceFontColor );
+        Assert.assertEquals("Special price text style on product page is not bold.", expectedStyle, productSpecPriceFontStyle);
     }
 
 
