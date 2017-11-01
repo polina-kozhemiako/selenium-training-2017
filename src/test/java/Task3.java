@@ -22,23 +22,23 @@ public class Task3 {
     public void start(){
         FirefoxDriverManager.getInstance().setup();
         driver = new FirefoxDriver();
+        driver.get("http://127.0.0.1:8080/litecart/admin");
+        // log in
+        if (driver.findElement(By.name("login")).isDisplayed()) {
+            driver.findElement(By.name("username")).sendKeys("admin");
+            driver.findElement(By.name("password")).sendKeys("admin");
+            driver.findElement(By.name("login")).click();
+        }
     }
 
     @Test
     public void verifyHeadersArePresentOnPages(){
-        driver.get("http://127.0.0.1:8080/litecart/admin");
-        // log in
-        driver.findElement(By.name("username")).sendKeys("admin");
-        driver.findElement(By.name("password")).sendKeys("admin");
-        driver.findElement(By.name("login")).click();
-        // get menu items
         List<WebElement> menuItems = driver.findElements(By.cssSelector("#app-"));
         for(int i=0; i < menuItems.size(); i++){
             driver.findElement(By.xpath("//*[@id='app-']["+(i+1)+"]")).click();
             Boolean isHeaderPresent = driver.findElements(By.cssSelector("#content h1")).size()>0;
 
             Assert.assertTrue("H1 header is not present on the page.", isHeaderPresent);
-            // get subitems
             List<WebElement> subItems = driver.findElements(By.cssSelector("#app- ul.docs li"));
             for (int j=0; j < subItems.size(); j++) {
                     driver.findElements(By.cssSelector("#app- ul.docs li")).get(j).click();
