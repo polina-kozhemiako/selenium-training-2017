@@ -38,13 +38,13 @@ public class Task3 {
             driver.findElement(By.xpath("//*[@id='app-']["+(i+1)+"]")).click();
             Boolean isHeaderPresent = driver.findElements(By.cssSelector("#content h1")).size()>0;
 
-            Assert.assertTrue("H1 header is not present on the page.", isHeaderPresent);
+            Assert.assertTrue("H1 header is not present on the menu page.", isHeaderPresent);
             List<WebElement> subItems = driver.findElements(By.cssSelector("#app- ul.docs li"));
             for (int j=0; j < subItems.size(); j++) {
                     driver.findElements(By.cssSelector("#app- ul.docs li")).get(j).click();
                     isHeaderPresent = driver.findElements(By.cssSelector("#content h1")).size()>0;
 
-                    Assert.assertTrue("H1 header is not present on the page.", isHeaderPresent);
+                    Assert.assertTrue("H1 header is not present on the submenu page.", isHeaderPresent);
             }
         }
     }
