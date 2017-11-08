@@ -1,13 +1,6 @@
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import org.junit.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -15,19 +8,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by polina.kozhemiako on 10/31/2017.
  */
-public class Task5 {
-    public static WebDriver driver;
-    private String adminPageUrl = "http://127.0.0.1:8080/litecart/admin/";
-
-    @Before
-    public void start(){
-        ChromeDriverManager.getInstance().setup();
-        driver = new ChromeDriver();
-        loginAsAdmin("admin", "admin");
-    }
+public class Task5 extends TestBase {
 
     @Test
     public void verifyAddingOfNewProduct(){
+        loginAsAdmin();
         driver.findElement(By.xpath("//*[@id='app-'][2]")).click();
         WebElement elButtonAdd = driver.findElement(By.xpath("//*[@id='content']//a[2]"));
         elButtonAdd.click();
@@ -38,18 +23,6 @@ public class Task5 {
         Boolean isProductAdded = driver.findElements(By.xpath("//td/a[contains(text(), 'Mermaid Duck')]")).size()>0;
 
         Assert.assertTrue("A new product has not been added to the Catalog.", isProductAdded);
-    }
-
-    @After
-    public void stop(){
-        driver.quit();
-    }
-
-    private void loginAsAdmin(String username, String password){
-        driver.get(adminPageUrl);
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
-        driver.findElement(By.name("login")).click();
     }
 
     private void fillInDataForNewProduct(){

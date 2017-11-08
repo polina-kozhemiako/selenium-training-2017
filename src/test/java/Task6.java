@@ -16,23 +16,11 @@ import java.util.List;
 /**
  * Created by polina.kozhemiako on 11/1/2017.
  */
-public class Task6 {
-    private static WebDriver driver;
-    private String homePageUrl = "http://127.0.0.1:8080/litecart";
-
-    @BeforeClass
-    public static void startTesting(){
-        FirefoxDriverManager.getInstance().setup();
-        driver = new FirefoxDriver();
-    }
-
-    @Before
-    public void start() {
-        driver.navigate().to(homePageUrl);
-    }
+public class Task6 extends TestBase{
 
     @Test
     public void verifyCartOperations(){
+        openHomePage();
         Integer startQuantity = Integer.parseInt(driver.findElement(By.cssSelector("span.quantity")).getText());
         Integer n = 3;
         for (int i = 0; i < n; i++){
@@ -45,15 +33,10 @@ public class Task6 {
         while (driver.findElements(By.cssSelector("tr.header")).size()!=0){
             removeProductFromCart();
         }
-        driver.navigate().to(homePageUrl);
+        openHomePage();
         String removedQuantity = driver.findElement(By.cssSelector("span.quantity")).getText();
 
         Assert.assertEquals("Not all products have been removed from the cart.", "0", removedQuantity);
-    }
-
-    @AfterClass
-    public static void stopTesting(){
-        driver.quit();
     }
 
     private void addProductToCart(){

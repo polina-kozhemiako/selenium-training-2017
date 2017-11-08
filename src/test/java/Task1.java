@@ -14,23 +14,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 /**
  * Created by polina.kozhemiako on 10/31/2017.
  */
-public class Task1 {
-    private static WebDriver driver;
-
-    @Before
-    public void start(){
-        InternetExplorerDriverManager.getInstance().arch32().setup();
-        driver = new InternetExplorerDriver();
-    }
+public class Task1 extends TestBase{
 
     @Test
     public void GoogleTest(){
         driver.get("https://google.com");
         driver.findElement(By.xpath("//*[@id='lst-ib']")).sendKeys("qwerty" + Keys.ENTER);
-    }
-
-    @After
-    public void stop() {
-        driver.close();
     }
 }

@@ -10,20 +10,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 /**
  * Created by polina.kozhemiako on 10/26/2017.
  */
-public class Task4 {
-    private static WebDriver driver;
-
-    @BeforeClass
-    public static void startTesting(){
-        FirefoxDriverManager.getInstance().setup();
-        //InternetExplorerDriverManager.getInstance().arch32().setup();
-        //ChromeDriverManager.getInstance().setup();
-        driver = new FirefoxDriver();
-    }
+public class Task4 extends TestBase{
 
     @Before
-    public void start() {
-        driver.navigate().to("http://127.0.0.1:8080/litecart");
+    public void startTesting() {
+        openHomePage();
         WebElement elCampaigns = driver.findElement(By.cssSelector("#box-campaigns h3"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elCampaigns);
     }
@@ -60,10 +51,11 @@ public class Task4 {
         WebElement elItemRegularPrice = driver.findElement(By.xpath("//*[@id='box-campaigns']//s"));
         String itemRegPriceFontColor = elItemRegularPrice.getCssValue("color");
         String itemRegPriceFontStyle = elItemRegularPrice.getCssValue("text-decoration");
-        String expected =(driver instanceof InternetExplorerDriver)?"rgba(119, 119, 119, 1)":"rgb(119, 119, 119)";
+        String expected =(driver instanceof FirefoxDriver)?"rgb(119, 119, 119)":"rgba(119, 119, 119, 1)";
+        String expectedStyle =(driver instanceof ChromeDriver)?"line-through solid rgb(119, 119, 119)":"line-through";
 
         Assert.assertEquals("Regular price text color on main page is not gray.", expected, itemRegPriceFontColor );
-        Assert.assertEquals("Regular price text style on main page is not strike.", "line-through", itemRegPriceFontStyle);
+        Assert.assertEquals("Regular price text style on main page is not strike.", expectedStyle, itemRegPriceFontStyle);
     }
 
     @Test
@@ -72,10 +64,11 @@ public class Task4 {
         WebElement elProductRegularPrice = driver.findElement(By.cssSelector("s.regular-price"));
         String productRegPriceFontColor = elProductRegularPrice.getCssValue("color");
         String productRegPriceFontStyle = elProductRegularPrice.getCssValue("text-decoration");
-        String expected =(driver instanceof InternetExplorerDriver)?"rgba(102, 102, 102, 1)":"rgb(102, 102, 102)";
+        String expectedColor =(driver instanceof FirefoxDriver)?"rgb(102, 102, 102)":"rgba(102, 102, 102, 1)";
+        String expectedStyle =(driver instanceof ChromeDriver)?"line-through solid rgb(102, 102, 102)":"line-through";
 
-        Assert.assertEquals("Regular price text color on product page is not gray.", expected, productRegPriceFontColor );
-        Assert.assertEquals("Regular price text style on product page is not strike.", "line-through", productRegPriceFontStyle);
+        Assert.assertEquals("Regular price text color on product page is not gray.", expectedColor, productRegPriceFontColor );
+        Assert.assertEquals("Regular price text style on product page is not strike.", expectedStyle, productRegPriceFontStyle);
     }
 
     @Test
@@ -83,8 +76,8 @@ public class Task4 {
         WebElement elItemSpecialPrice =  driver.findElement(By.xpath("//*[@id='box-campaigns']//strong"));
         String itemSpecPriceFontColor = elItemSpecialPrice.getCssValue("color");
         String itemSpecPriceFontStyle = elItemSpecialPrice.getCssValue("font-weight");
-        String expectedColor =(driver instanceof InternetExplorerDriver)?"rgba(204, 0, 0, 1)":"rgb(204, 0, 0)";
-        String expectedStyle =(driver instanceof ChromeDriver)?"bold":"900";
+        String expectedColor =(driver instanceof FirefoxDriver)?"rgb(204, 0, 0)":"rgba(204, 0, 0, 1)";
+        String expectedStyle =(driver instanceof ChromeDriver)?"700":"900";
 
         Assert.assertEquals("Special price text color on main page is not red.", expectedColor, itemSpecPriceFontColor );
         Assert.assertEquals("Special price text style on main page is not bold.", expectedStyle, itemSpecPriceFontStyle);
@@ -96,17 +89,10 @@ public class Task4 {
         WebElement elProductSpecialPrice = driver.findElement(By.cssSelector("strong.campaign-price"));
         String productSpecPriceFontColor = elProductSpecialPrice.getCssValue("color");
         String productSpecPriceFontStyle = elProductSpecialPrice.getCssValue("font-weight");
-        String expectedColor =(driver instanceof InternetExplorerDriver)?"rgba(204, 0, 0, 1)":"rgb(204, 0, 0)";
-        String expectedStyle =(driver instanceof ChromeDriver)?"bold":"700";
+        String expectedColor =(driver instanceof FirefoxDriver)?"rgb(204, 0, 0)":"rgba(204, 0, 0, 1)";
 
         Assert.assertEquals("Special price text color on product page is not red.",expectedColor, productSpecPriceFontColor );
-        Assert.assertEquals("Special price text style on product page is not bold.", expectedStyle, productSpecPriceFontStyle);
-    }
-
-
-    @AfterClass
-    public static void stopTesting(){
-        driver.quit();
+        Assert.assertEquals("Special price text style on product page is not bold.", "700", productSpecPriceFontStyle);
     }
 }
 
