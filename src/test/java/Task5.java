@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+
 /**
  * Created by polina.kozhemiako on 10/31/2017.
  */
@@ -32,7 +34,9 @@ public class Task5 extends TestBase {
         driver.findElements(By.name("product_groups[]")).get(2).click();
         driver.findElement(By.name("quantity")).clear();
         driver.findElement(By.name("quantity")).sendKeys("1.00");
-        driver.findElement(By.name("new_images[]")).sendKeys("D:\\Projects\\mermaid_yellow_duck.jpg");
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("mermaid_yellow_duck.jpg").getFile());
+        driver.findElement(By.name("new_images[]")).sendKeys(file.getAbsolutePath());
         // Information tab
         driver.findElements(By.cssSelector("ul.index li")).get(1).click();
         Select elManufacturer = new Select(driver.findElement(By.name("manufacturer_id")));
