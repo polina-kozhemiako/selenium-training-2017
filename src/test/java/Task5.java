@@ -18,18 +18,23 @@ public class Task5 extends TestBase {
         driver.findElement(By.xpath("//*[@id='app-'][2]")).click();
         WebElement elButtonAdd = driver.findElement(By.xpath("//*[@id='content']//a[2]"));
         elButtonAdd.click();
-        fillInDataForNewProduct();
+        String productName = generateUniqueProductName();
+        fillInDataForNewProduct(productName);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.findElement(By.name("save")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("table.dataTable")));
-        Boolean isProductAdded = driver.findElements(By.xpath("//td/a[contains(text(), 'Mermaid Duck')]")).size()>0;
+        Boolean isProductAdded = driver.findElements(By.xpath("//td/a[contains(text(), '"+ productName +"')]")).size()>0;
 
         Assert.assertTrue("A new product has not been added to the Catalog.", isProductAdded);
     }
 
-    private void fillInDataForNewProduct(){
+    private String generateUniqueProductName(){
+        return "Mermaid Duck_" + System.currentTimeMillis();
+    }
+
+    private void fillInDataForNewProduct(String productName){
         driver.findElements(By.name("status")).get(0).click();
-        driver.findElement(By.name("name[en]")).sendKeys("Mermaid Duck");
+        driver.findElement(By.name("name[en]")).sendKeys(productName);
         driver.findElements(By.name("product_groups[]")).get(0).click();
         driver.findElements(By.name("product_groups[]")).get(2).click();
         driver.findElement(By.name("quantity")).clear();
