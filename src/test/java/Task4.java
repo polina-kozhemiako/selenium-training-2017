@@ -1,7 +1,6 @@
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,11 +9,12 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 /**
  * Created by polina.kozhemiako on 10/26/2017.
  */
-public class Task4 extends TestBase{
+@RunWith(Parameterized.class)
+public class Task4 extends TestBaseParameterized{
 
     @Before
     public void startTesting() {
-        openHomePage();
+        BasicOperations.openHomePage(driver);
         WebElement elCampaigns = driver.findElement(By.cssSelector("#box-campaigns h3"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elCampaigns);
     }
