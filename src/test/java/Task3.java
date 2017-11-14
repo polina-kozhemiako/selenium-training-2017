@@ -1,5 +1,3 @@
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +17,7 @@ public class Task3 extends TestBase{
 
     @Test
     public void verifyHeadersArePresentOnPages(){
-        loginAsAdmin();
+        BasicOperations.loginAsAdmin(driver);
         List<WebElement> menuItems = driver.findElements(By.cssSelector("#app-"));
         for(int i=0; i < menuItems.size(); i++){
             driver.findElement(By.xpath("//*[@id='app-']["+(i+1)+"]")).click();

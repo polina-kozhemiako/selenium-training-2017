@@ -17,7 +17,7 @@ public class Task7 extends TestBase {
 
     @Test
     public void verifyNewWindowOpening(){
-        loginAsAdmin();
+        BasicOperations.loginAsAdmin(driver);
         driver.findElement(By.xpath("//*[@id='app-'][3]")).click();
         WebElement elCanada = driver.findElement(By.xpath("//td/a[contains(text(), 'Canada')]"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elCanada);

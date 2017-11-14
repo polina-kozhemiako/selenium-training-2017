@@ -14,7 +14,7 @@ public class Task5 extends TestBase {
 
     @Test
     public void verifyAddingOfNewProduct(){
-        loginAsAdmin();
+        BasicOperations.loginAsAdmin(driver);
         driver.findElement(By.xpath("//*[@id='app-'][2]")).click();
         WebElement elButtonAdd = driver.findElement(By.xpath("//*[@id='content']//a[2]"));
         elButtonAdd.click();
