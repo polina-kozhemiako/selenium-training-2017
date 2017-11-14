@@ -16,10 +16,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
  */
 public class TestBase {
     protected static WebDriver driver;
-    private final String adminPageUrl = "http://127.0.0.1:8080/litecart/admin/";
-    private final String homePageUrl = "http://127.0.0.1:8080/litecart";
-    private String username = "admin";
-    private String password = "admin";
 
     @BeforeClass
     public static void start() {
@@ -30,16 +26,5 @@ public class TestBase {
     @AfterClass
     public static void stop() {
         driver.quit();
-    }
-
-    void openHomePage(){
-        driver.get(homePageUrl);
-    }
-
-    void loginAsAdmin() {
-        driver.get(adminPageUrl);
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
-        driver.findElement(By.name("login")).click();
     }
 }
