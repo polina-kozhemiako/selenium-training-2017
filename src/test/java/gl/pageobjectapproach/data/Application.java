@@ -25,4 +25,12 @@ public class Application {
     public void goBack(){
         driver.navigate().back();
     }
+
+    public void addSeveralProductsToCart(int n){
+        for (int i = 0; i < n; i++){
+            mainPage.clickPopularItemWithIndex(0);
+            productPage.addProductToCart();
+            goBack();
+        }
+    }
 }
